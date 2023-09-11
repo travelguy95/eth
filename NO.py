@@ -322,13 +322,11 @@ def load_darcy_pt(data_path,
     y_train = data['y'][0:n_train, :, :].unsqueeze(channel_dim).clone()
     del data
 
-    ############ for training ###########
     idx = test_resolutions.index(train_resolution)
     test_resolutions.pop(idx)
     n_test = n_tests.pop(idx)
     test_batch_size = test_batch_sizes.pop(idx)
-    data = torch.load(Path(data_path).joinpath(f'bridge_training.pt').as_posix())
-    #####################################
+    data = torch.load(Path(data_path).joinpath(f'bridge_testing.pt').as_posix())
 
     x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
     y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
