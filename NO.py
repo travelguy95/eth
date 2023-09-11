@@ -374,7 +374,7 @@ def load_darcy_pt(data_path,
 
     for (res, n_test, test_batch_size) in zip(test_resolutions, n_tests, test_batch_sizes):
         print(f'Loading test db at resolution {res} with {n_test} samples and batch-size={test_batch_size}')
-        data = torch.load(Path(data_path).joinpath(f'darcy_test_{res}.pt').as_posix())
+        data = torch.load(Path(data_path).joinpath(f'bridge_testing.pt').as_posix())
         x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
         y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
         del data
