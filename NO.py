@@ -34,10 +34,6 @@ class UnitGaussianNormalizer:
             if len(self.mean.shape) > len(sample_idx[0].shape):
                 std = self.std[:,sample_idx]+ self.eps # T*batch*n
                 mean = self.mean[:,sample_idx]
-
-        # x is in shape of batch*n or T*batch*n
-        # x = (x.view(self.sample_shape) * std) + mean
-        # x = x.view(-1, *self.sample_shape)
         x *= std
         x += mean
 
@@ -47,22 +43,11 @@ class UnitGaussianNormalizer:
         self.mean = self.mean.cuda()
         self.std = self.std.cuda()
         return self
-
-    def cpu(self):
-        self.mean = self.mean.cpu()
-        self.std = self.std.cpu()
-        return self
-    
+        
     def to(self, device):
         self.mean = self.mean.to(device)
         self.std = self.std.to(device)
         return self
-
-
-def count_params(model):
-    """Returns the number of parameters of a PyTorch model"""
-    return sum([p.numel()*2 if p.is_complex() else p.numel() for p in model.parameters()])
-
 
 def wandb_login(api_key_file='../config/wandb_api_key.txt'):
     with open(api_key_file, 'r') as f:
@@ -86,9 +71,6 @@ def get_wandb_api_key(api_key_file='../config/wandb_api_key.txt'):
         with open(api_key_file, 'r') as f:
             key = f.read()
         return key.strip()
-
-from torch.utils.data.dataset import Dataset
-
 
 class TensorDataset(Dataset):
     def __init__(self, x, y, transform_x=None, transform_y=None):
